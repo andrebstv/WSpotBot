@@ -7,7 +7,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 
-grupo = "E:\home\\abs\Aplicativos\leitura_ults\whatsbot\grupo.txt"
+grupo = "/home/abs/Aplicativos/leitura_ults/whatsbot/grupo.txt"
 # grupo = '/home/abs/Aplicativos/leitura_ults/whatsbot/grupo.txt'
 
 # Escopo necessário para acessar os e-mails e modificar
@@ -88,8 +88,8 @@ def main():
             ).execute()
             
 def enviar_mensagem(numero, mensagem):
-    HOST =  'ABSSERVER'  # O endereço IP do servidor JavaScript
-    #HOST =  '127.0.0.1'  # O endereço IP do servidor JavaScript
+    #HOST =  'ABSSERVER'  # O endereço IP do servidor JavaScript
+    HOST =  '127.0.0.1'  # O endereço IP do servidor JavaScript
     PORT = 65432        # A porta em que o servidor JavaScript está ouvindo
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -97,8 +97,8 @@ def enviar_mensagem(numero, mensagem):
         s.sendall(f"{numero}${mensagem}\n".encode())
         
 def enviar_localizacao(numero, mensagem, latitude, longitude):
-    HOST =  'ABSSERVER'  # O endereço IP do servidor JavaScript
-    #HOST =  '127.0.0.1'  # O endereço IP do servidor JavaScript
+    #HOST =  'ABSSERVER'  # O endereço IP do servidor JavaScript
+    HOST =  '127.0.0.1'  # O endereço IP do servidor JavaScript
     PORT = 65432        # A porta em que o servidor JavaScript está ouvindo
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
