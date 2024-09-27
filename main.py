@@ -7,8 +7,8 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 
-grupo = "/home/abs/Aplicativos/leitura_ults/whatsbot/grupo.txt"
-# grupo = '/home/abs/Aplicativos/leitura_ults/whatsbot/grupo.txt'
+# grupo = "E:\home\\abs\Aplicativos\leitura_ults\whatsbot\grupo.txt"
+grupo = '/home/abs/Aplicativos/leitura_ults/whatsbot/grupo.txt'
 
 # Escopo necessário para acessar os e-mails e modificar
 SCOPES = [
