@@ -58,16 +58,17 @@ def main():
             body = ""
             if parts:
                     for part in parts:
-                        if part.get('mimeType') == 'text/plain':  # Corpo do e-mail em texto simples
+                        #if part.get('mimeType') == 'text/plain':  # Corpo do e-mail em texto simples
+                        if part.get('mimeType') == 'text/plain' or part.get('mimeType') == 'text/html':
                             data = part.get('body').get('data')
-                            body += base64.urlsafe_b64decode(data).decode('utf-8')
+                            body += base64.urlsafe_b64decode(data).decode('utf-8').replace('<br>', '\n')
                         break
             else:
                 body = base64.urlsafe_b64decode(msg.get('payload').get('body').get('data')).decode('utf-8')
             # data = payload.get('parts').get('body').get('data')
             # body = base64.urlsafe_b64decode(data).decode('utf-8')
             print(f"Mensagem:\n{body}")
-            padrao = r'Latitude\:(-[\d]+\.[\d]+)\W+Longitude:(-[\d]+\.[\d]+)'
+            padrao = r'Latitude\:(-[\d]+\.[\d]+)[\W<br>]+Longitude:(-[\d]+\.[\d]+)'
             matchs = re.search(padrao,body)
             msg_spot = re.search(r'Mensagem:\s*(.* ?)\W',body).group(1)
             
