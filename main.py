@@ -2,6 +2,7 @@ import base64
 import os.path
 import socket
 import re
+from datetime import datetime
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -47,7 +48,8 @@ def main():
         results = service.users().messages().list(userId='me', q=query).execute()
         messages = results.get('messages', [])
     except Exception as e:
-        print(f"Erro ao configurar o serviço Gmail API: {str(e)}")
+        datahora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print(f"Erro ao configurar o serviço Gmail API as {datahora}:  {str(e)}")
         enviar_mensagem('27999438898@c.us',f"Erro no serviço do GMAIL - {str(e)}")
     
     if not messages:
