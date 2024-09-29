@@ -17,34 +17,38 @@ SCOPES = [
 ]
 def main():
     #"""Exemplo de leitura de e-mails do Gmail com filtro de título."""
-    creds = None
-    # O arquivo token.json armazena as credenciais de acesso do usuário.
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-    # Se não houver credenciais válidas, faça login
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Salva as credenciais para futuras execuções
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
+    try:
+        creds = None
+        # O arquivo token.json armazena as credenciais de acesso do usuário.
+        if os.path.exists('token.json'):
+            creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+        # Se não houver credenciais válidas, faça login
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    'credentials.json', SCOPES)
+                creds = flow.run_local_server(port=0)
+            # Salva as credenciais para futuras execuções
+            with open('token.json', 'w') as token:
+                token.write(creds.to_json())
 
-    # Conectar ao serviço Gmail API
-    service = build('gmail', 'v1', credentials=creds)
+        # Conectar ao serviço Gmail API
+        service = build('gmail', 'v1', credentials=creds)
 
-    # Define o título (assunto) que você quer buscar
-    subject_query = 'Localização GPS'
+        # Define o título (assunto) que você quer buscar
+        subject_query = 'Localização GPS'
 
-    # Filtrar mensagens usando o parâmetro 'q', e adicionei o is:unread para buscar só mensagens nao lidas
-    query = f'subject:{subject_query} is:unread'
+        # Filtrar mensagens usando o parâmetro 'q', e adicionei o is:unread para buscar só mensagens nao lidas
+        query = f'subject:{subject_query} is:unread'
 
-    # Chamada à API para listar os e-mails da caixa de entrada que correspondem à busca
-    results = service.users().messages().list(userId='me', q=query).execute()
-    messages = results.get('messages', [])
+        # Chamada à API para listar os e-mails da caixa de entrada que correspondem à busca
+        results = service.users().messages().list(userId='me', q=query).execute()
+        messages = results.get('messages', [])
+    except Exception as e:
+        print(f"Erro ao configurar o serviço Gmail API: {str(e)}")
+        enviar_mensagem('27999438898@c.us',f"Erro no serviço do GMAIL - {str(e)}")
     
     if not messages:
         print('Nenhuma mensagem encontrada com o título especificado.')
