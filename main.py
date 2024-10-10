@@ -7,6 +7,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
+from google.oauth2 import service_account
 
 # grupo = "E:\home\\abs\Aplicativos\leitura_ults\whatsbot\grupo.txt"
 grupo = '/home/abs/Aplicativos/leitura_ults/whatsbot/grupo.txt'
@@ -16,6 +17,8 @@ SCOPES = [
     'https://www.googleapis.com/auth/gmail.readonly',
     'https://www.googleapis.com/auth/gmail.modify'
 ]
+USER_EMAIL = 'sistemasabsengenharia@gmail.com'
+SERVICE_ACCOUNT_FILE = "token_servico.json"
 def main():
     #"""Exemplo de leitura de e-mails do Gmail com filtro de título."""
     try:
@@ -35,6 +38,10 @@ def main():
             with open('token.json', 'w') as token:
                 token.write(creds.to_json())
 
+        # credentials = service_account.Credentials.from_service_account_file(
+        # SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+        
+        # delegated_credentials = credentials.with_subject(USER_EMAIL)
         # Conectar ao serviço Gmail API
         service = build('gmail', 'v1', credentials=creds)
 
@@ -70,7 +77,7 @@ def main():
                             body += base64.urlsafe_b64decode(data).decode('utf-8').replace('<br>', '\n')
                         break
             else:
-                body = base64.urlsafe_b64decode(msg.get('payload').get('body').get('data')).decode('utf-8')
+                body = base64.urlsafe_b64decode(msg.get('payload').get('body').get('data')).decode('utf-8').replace('<br>', '\n')
             # data = payload.get('parts').get('body').get('data')
             # body = base64.urlsafe_b64decode(data).decode('utf-8')
             print(f"Mensagem:\n{body}")
